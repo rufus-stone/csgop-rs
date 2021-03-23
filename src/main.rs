@@ -1,9 +1,11 @@
-use std::path::PathBuf;
-
 use simple_logger::SimpleLogger;
 use structopt::StructOpt;
 
 mod csgo;
+
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Result};
+use std::collections::HashMap;
 
 fn main() {
     // Get the CLI args
@@ -33,10 +35,10 @@ fn main() {
             .unwrap(),
     }
 
-    log::info!("{:?}", &args);
+    log::debug!("{:?}", &args);
 
     // Get the latest log file from the directory
-    let log_dir: PathBuf = args.log_directory;
+    let log_dir: std::path::PathBuf = args.log_directory;
 
     // Create the parsing engine
     let mut engine = csgo::core::Engine::new(log_dir, 2);

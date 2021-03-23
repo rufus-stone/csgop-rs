@@ -101,13 +101,17 @@ impl Reader {
 
         // If not, set the latest file as the active log file
         } else {
+            log::info!(
+                "Opened active log file '{}'",
+                latest_file.as_ref().unwrap().display()
+            );
             self.active_log = latest_file.clone();
         }
 
         // Open the active log file
         let fd = match File::open(self.active_log.as_ref().unwrap()) {
             Ok(result) => {
-                log::info!(
+                log::debug!(
                     "Active file open: {}",
                     &self.active_log.clone().unwrap().display()
                 );
