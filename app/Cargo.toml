@@ -1,0 +1,12 @@
+[package]
+name = "csgolp"
+version = "0.1.0"
+description = "A Counter Strike: Global Offensive server log parser"
+authors = ["rufus-stone <60827786+rufus-stone@users.noreply.github.com>"]
+edition = "2018"
+
+[dependencies]
+log = "0.4.14"
+simple_logger = "1.11.0"
+structopt = "0.3.21"
+csgo = { path = "../libs/csgo" }

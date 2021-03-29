@@ -1,12 +1,6 @@
 use simple_logger::SimpleLogger;
 use structopt::StructOpt;
 
-mod csgo;
-
-use serde::{Deserialize, Serialize};
-use serde_json::{json, Result};
-use std::collections::HashMap;
-
 fn main() {
     // Get the CLI args
     let args = csgo::cli::Opt::from_args();

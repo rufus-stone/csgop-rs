@@ -1,6 +1,6 @@
 use std::fs::{File, Metadata};
 use std::io::{BufReader, Read, Seek, SeekFrom};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub struct Reader {
     log_dir_path: PathBuf,
@@ -19,7 +19,7 @@ impl Reader {
         }
     }
 
-    fn latest_log_file(log_dir_path: &PathBuf) -> Option<PathBuf> {
+    fn latest_log_file(log_dir_path: &Path) -> Option<PathBuf> {
         // Find the most recent file in the directory (based on file name)
         let mut files: Vec<_> = std::fs::read_dir(&log_dir_path)
             .unwrap()
@@ -156,7 +156,7 @@ impl Reader {
                     "Read {} bytes from position {} to {}",
                     &bytes_read,
                     &self.pos,
-                    &self.pos + bytes_read
+                    self.pos + bytes_read
                 );
 
                 // Update self with the new seek position

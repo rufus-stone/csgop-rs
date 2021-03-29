@@ -18,3 +18,6 @@ mod state;
 
 /// The utils module provides various utility functions such as Steam ID translation
 mod utils;
+
+/// The config module provides reading/writing of config files
+mod config;

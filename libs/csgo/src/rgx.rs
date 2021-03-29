@@ -12,6 +12,9 @@ use lazy_static::lazy_static;
 //const HOSTAGE: &str = r#"^L (\d{2}/\d{2}/\d{4} - \d{2}:\d{2}:\d{2}): "([^<]+)<\d{1,3}><(STEAM[^>]+)><(CT|TERRORIST)>" triggered "(Touched_A_Hostage|Rescued_A_Hostage|Killed_A_Hostage)""#;
 //const CHICKEN: &str = r#"^L (\d{2}/\d{2}/\d{4} - \d{2}:\d{2}:\d{2}): "([^<]+)<\d{1,3}><(STEAM[^>]+)><(CT|TERRORIST)>" .+? killed other "chicken.+? with "([^"]+)""#;
 
+/// A match start message can appear many times in the logs (e.g. at the start of the warm-up), but a proper "match" spans from the last match start message until the first game over message.
+/// This means we'll need to reset the game state on each match_start message, to avoid polluting the stats with stuff that happened during the warmup or other times outside of core gameplay.
+/// Awkwardly, this means that any switched_team events that occured before the last match_start event will be forgotten, so we'll need to check our knowledge of which players are in which teams on each event containing player/team info.
 pub fn match_start(input: &str) -> Option<regex::Captures> {
     lazy_static! {
         static ref MATCH_START: regex::Regex = regex::Regex::new(r#"^L \d{2}/\d{2}/\d{4} - \d{2}:\d{2}:\d{2}: World triggered "Match_Start" on "([^"]+)""#).unwrap();

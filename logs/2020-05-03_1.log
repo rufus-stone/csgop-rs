@@ -1,3 +1,22 @@
+L 05/04/2020 - 21:49:01: World triggered "Round_Start"
+L 05/04/2020 - 21:49:05: "Alice<8><STEAM_1:1:00000001><>" entered the game
+L 05/04/2020 - 21:49:06: "Bob<6><STEAM_1:0:00000002><>" entered the game
+L 05/04/2020 - 21:49:06: "Sam<5><STEAM_1:0:00000003><>" entered the game
+L 05/04/2020 - 21:49:07: "Sam<5><STEAM_1:0:00000003>" switched from team <Unassigned> to <TERRORIST>
+L 05/04/2020 - 21:49:09: World triggered "Game_Commencing"
+L 05/04/2020 - 21:49:09: "Dean<9><STEAM_1:1:00000004><>" entered the game
+L 05/04/2020 - 21:49:10: Starting Freeze period
+L 05/04/2020 - 21:49:14: World triggered "Match_Start" on "de_sugarcane"
+L 05/04/2020 - 21:49:14: James<3><STEAM_1:0:00000005><>" entered the game
+L 05/04/2020 - 21:49:15: World triggered "Round_Start"
+L 05/04/2020 - 21:49:17: "Mark<7><STEAM_1:1:00000006><>" entered the game
+L 05/04/2020 - 21:49:18: "Alice<8><STEAM_1:1:00000001>" switched from team <Unassigned> to <CT>
+L 05/04/2020 - 21:49:18: "Dean<9><STEAM_1:1:00000004>" switched from team <Unassigned> to <TERRORIST>
+L 05/04/2020 - 21:49:18: "Bob<6><STEAM_1:0:00000002>" switched from team <Unassigned> to <CT>
+L 05/04/2020 - 21:49:19: "Mark<7><STEAM_1:1:00000006>" switched from team <Unassigned> to <TERRORIST>
+L 05/04/2020 - 21:49:19: "James<3><STEAM_1:0:00000005>" switched from team <Unassigned> to <TERRORIST>
+L 05/04/2020 - 21:49:20: Starting Freeze period
+L 05/04/2020 - 21:49:25: "Mark<7><STEAM_1:1:00000006>" switched from team <TERRORIST> to <CT>
 L 05/04/2020 - 21:49:30: World triggered "Match_Start" on "cs_agency"
 L 05/04/2020 - 21:49:33: "Alice<8><STEAM_1:1:00000001><CT>" purchased "item_kevlar"
 L 05/04/2020 - 21:49:33: "Bob<6><STEAM_1:0:00000002><CT>" purchased "deagle"
