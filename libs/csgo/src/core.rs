@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 
+use super::config;
 use super::geo;
 use super::logs;
 use super::rgx;
@@ -10,6 +11,7 @@ pub struct Engine {
     delay: u64,
     reader: logs::Reader,
     game_state: state::GameState,
+    config: config::Config,
 }
 
 impl Engine {
@@ -25,6 +27,7 @@ impl Engine {
             delay,
             reader: logs::Reader::new(log_dir_path),
             game_state: state::GameState::new(),
+            config: config::Config::from_file_or_default(),
         }
     }
 

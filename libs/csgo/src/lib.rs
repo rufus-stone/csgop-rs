@@ -1,6 +1,9 @@
 /// The cli module handles command line argument parsing
 pub mod cli;
 
+/// The config module provides reading/writing of config files
+pub mod config;
+
 /// The core module handles the engine that drives the log reader and retrieves the parsed JSON
 pub mod core;
 
@@ -18,6 +21,3 @@ mod state;
 
 /// The utils module provides various utility functions such as Steam ID translation
 mod utils;
-
-/// The config module provides reading/writing of config files
-mod config;
