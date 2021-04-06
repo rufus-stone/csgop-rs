@@ -8,26 +8,25 @@ use super::state;
 use super::utils;
 
 pub struct Engine {
-    delay: u64,
     reader: logs::Reader,
     game_state: state::GameState,
     config: config::Config,
 }
 
 impl Engine {
-    /// Create a new Engine that will look for log files within the specified directory, repeating every `delay` seconds
+    /// Create a new Engine with the specified Config
     ///
     /// ```rust
     /// let mut engine = csgo::core::Engine::new(std::path::PathBuf::from("path/to/log/dir"), 2); // Every 2 second, `engine` will look for log files within the directory at `path/to/log/dir`
     ///
     /// engine.run(); // Start the engine
     /// ```
-    pub fn new(log_dir_path: std::path::PathBuf, delay: u64) -> Engine {
+    pub fn new(config: config::Config) -> Engine {
+        log::info!("Using config: {:?}", &config);
         Engine {
-            delay,
-            reader: logs::Reader::new(log_dir_path),
+            reader: logs::Reader::new(&config.log_dir),
             game_state: state::GameState::new(),
-            config: config::Config::from_file_or_default(),
+            config,
         }
     }
 
@@ -73,8 +72,8 @@ impl Engine {
             }
 
             // Sleep
-            log::trace!("Sleeping for {}s", self.delay);
-            std::thread::sleep(std::time::Duration::from_secs(self.delay as u64));
+            log::trace!("Sleeping for {}s", self.config.delay);
+            std::thread::sleep(std::time::Duration::from_secs(self.config.delay as u64));
         }
     }
 
@@ -96,7 +95,7 @@ impl Engine {
             log::info!("Switched Teams: {:?}", &captures);
 
             let player_name = captures[1].to_owned();
-            let player_id = captures[2].to_owned();
+            let player_id = utils::translate_steam_id(&captures[2], &self.config);
             let player = state::Player::new(player_name, player_id);
 
             let team = &captures[3];
@@ -113,14 +112,14 @@ impl Engine {
 
             // Attacking player
             let player_name = captures[2].to_owned();
-            let player_id = captures[3].to_owned();
+            let player_id = utils::translate_steam_id(&captures[3], &self.config);
             let player_team = captures[4].to_owned();
             let player_position = captures[5].to_owned();
             let player_lat_lon = geo::game_pos_to_decimal_degrees(&player_position);
 
             // Victim of attack
             let victim_name = captures[6].to_owned();
-            let victim_id = captures[7].to_owned();
+            let victim_id = utils::translate_steam_id(&captures[7], &self.config);
             let victim_team = captures[8].to_owned();
             let victim_position = captures[9].to_owned();
             let victim_lat_lon = geo::game_pos_to_decimal_degrees(&victim_position);
@@ -259,7 +258,7 @@ impl Engine {
 
             self.game_state.events_mut().push(event);
 
-            log::info!("{:?}", &self.game_state);
+            //log::info!("{:?}", &self.game_state);
 
             let json = serde_json::to_value(&self.game_state).unwrap();
 

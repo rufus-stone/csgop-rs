@@ -10,9 +10,9 @@ pub struct Reader {
 }
 
 impl Reader {
-    pub fn new(log_dir_path: PathBuf) -> Reader {
+    pub fn new(log_dir_path: &Path) -> Reader {
         Reader {
-            log_dir_path,
+            log_dir_path: log_dir_path.to_owned(),
             active_log: None,
             pos: 0,
             fm: None,

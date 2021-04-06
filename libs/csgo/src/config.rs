@@ -6,6 +6,8 @@ const DEFAULT_CONFIG: &str = r#"
 # The directory containing your CS:GO server game logs, e.g. <server install dir>/server/logs
 log_dir = ''
 
+# How many seconds to wait before checking for new logs
+delay = 2
 
 # Optionally, specify whether Steam ID translation should occurs (set active = true)
 # You will need to specify some combination of either:
@@ -17,17 +19,19 @@ log_dir = ''
 #hash = 'SHA1'
 
 #[[steam_id_translation.mappings]]
-#steam_id = 'STEAM_1:0:12345678'
+#steam_id = 'STEAM_1:1:00000001'
 #name = 'Alice'
 
 #[[steam_id_translation.mappings]]
-#steam_id = 'STEAM_1:1:87654321'
+#steam_id = 'STEAM_1:0:00000002'
 #name = 'Bob'
 
 "#;
 
+const CONFIG_FILE_NAME: &str = "Config.toml";
+
 #[derive(Debug, Serialize, Deserialize)]
-enum HashAlgo {
+pub enum HashAlgo {
     MD5,
     SHA1,
     SHA256,
@@ -35,21 +39,22 @@ enum HashAlgo {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SteamIdTranslationMapping {
-    steam_id: String,
-    name: String,
+    pub steam_id: String,
+    pub name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SteamIdTranslation {
-    active: bool,
-    hash: Option<HashAlgo>,
-    mappings: Option<Vec<SteamIdTranslationMapping>>,
+    pub active: bool,
+    pub hash: Option<HashAlgo>,
+    pub mappings: Option<Vec<SteamIdTranslationMapping>>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
-    log_dir: String,
-    steam_id_translation: Option<SteamIdTranslation>,
+    pub log_dir: std::path::PathBuf,
+    pub delay: u64,
+    pub steam_id_translation: Option<SteamIdTranslation>,
 }
 
 impl Config {
@@ -108,12 +113,12 @@ impl Config {
         config_file.write_all(config_str.as_bytes())
     }
 
-    pub fn locate_config_file() -> Option<std::path::PathBuf> {
+    pub fn locate_config_file(path: &std::path::Path) -> Option<std::path::PathBuf> {
         // Determine where the config file should be found
         //let project_dirs = ProjectDirs::from("", "", "csgolp").unwrap();
         if let Some(project_dirs) = ProjectDirs::from("", "", "csgolp") {
             let config_dir = project_dirs.config_dir();
-            let config_path = config_dir.join("config.toml");
+            let config_path = config_dir.join(path);
             log::info!("Config file location: {:?}", config_path);
             Some(config_path)
         } else {
@@ -122,7 +127,9 @@ impl Config {
     }
 
     pub fn from_file_or_default() -> Config {
-        if let Some(config_file_path) = Self::locate_config_file() {
+        if let Some(config_file_path) =
+            Self::locate_config_file(std::path::Path::new(CONFIG_FILE_NAME))
+        {
             if let Some(config) = Self::read_from_file(&config_file_path) {
                 config
             } else {

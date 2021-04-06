@@ -31,11 +31,17 @@ fn main() {
 
     log::debug!("{:?}", &args);
 
+    // Load the config from file
+    let mut cfg = csgo::config::Config::from_file_or_default();
+
     // Get the latest log file from the directory
     let log_dir: std::path::PathBuf = args.log_directory;
 
+    // Override the log_dir if one was provided
+    cfg.log_dir = log_dir;
+
     // Create the parsing engine
-    let mut engine = csgo::core::Engine::new(log_dir, 2);
+    let mut engine = csgo::core::Engine::new(cfg);
 
     // Start watching for logs and parsing
     engine.run();
